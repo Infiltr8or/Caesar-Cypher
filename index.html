@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Cipher Telemetry System (G.C.T.S.)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Space Grotesk + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #080d1a;
+            --panel-bg: rgba(13, 20, 36, 0.78);
+            --border-glow: rgba(56, 189, 248, 0.25);
+            --neon-cyan: #00f0ff;
+            --neon-magenta: #f43f5e;
+            --neon-emerald: #10b981;
+            --text-primary: #e2e8f0;
+            --text-dim: #64748b;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-mono-tech {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Glassmorphic Tactical Panels */
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 10px 35px -5px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-panel-accent {
+            border-top: 1px solid rgba(0, 240, 255, 0.5);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(10, 16, 28, 0.8);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.3);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 240, 255, 0.6);
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-slate-200 antialiased selection:bg-cyan-500/20 selection:text-cyan-300">
+
+    <!-- Interactive HTML5 Background Canvas: Dot-Matrix World Continents, Nodes & Pulsing RGB Cyber Arcs -->
+    <canvas id="network-canvas" class="fixed inset-0 w-full h-full pointer-events-auto z-0 block"></canvas>
+
+    <!-- Ambient Vignette Layer to preserve legibility while keeping glowing map visible -->
+    <div class="fixed inset-0 pointer-events-none z-10 bg-radial from-transparent via-transparent to-[#050811]/60"></div>
+
+    <!-- Application UI Layer -->
+    <div class="relative z-20 max-w-7xl mx-auto px-4 py-4 md:py-6 flex flex-col min-h-screen justify-between gap-6">
+
+        <!-- Header: High-Tech Telecommunications / NOC Operations Bar -->
+        <header class="glass-panel glass-panel-accent rounded-xl p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5 w-full md:w-auto">
+                <div class="relative flex items-center justify-center w-10 h-10 rounded-lg bg-cyan-950/40 border border-cyan-400/40 text-cyan-400">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-lg bg-cyan-400 opacity-20"></span>
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] font-mono-tech tracking-wider uppercase text-cyan-400 font-semibold">NOC TELEMETRY RELAY</span>
+                        <span class="text-[10px] font-mono-tech px-2 py-0.5 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/60">NODE v2.9-ONLINE</span>
+                    </div>
+                    <h1 class="text-lg md:text-xl font-bold tracking-tight text-white flex items-center gap-2">
+                        Global Cipher Telemetry System (G.C.T.S.)
+                    </h1>
+                </div>
+            </div>
+
+            <!-- Header Telemetry Readouts -->
+            <div class="flex items-center justify-between w-full md:w-auto gap-5 text-xs font-mono-tech">
+                <div class="flex items-center gap-4">
+                    <div class="hidden sm:block text-right">
+                        <div class="text-[10px] text-slate-400 tracking-wider">GLOBAL MESH LINKS</div>
+                        <div id="active-arcs-count" class="text-cyan-300 font-semibold">CONNECTING...</div>
+                    </div>
+                    <div class="border-l border-slate-800 pl-4 text-right">
+                        <div class="text-[10px] text-slate-400 tracking-wider">UTC TIMESTAMP</div>
+                        <div id="zulu-clock" class="text-emerald-400 font-medium">00:00:00 UTC</div>
+                    </div>
+                </div>
+
+                <!-- Audio FX Toggle -->
+                <button id="audio-toggle-btn" onclick="toggleAudio()" class="px-2.5 py-1.5 rounded-lg border border-slate-700/70 bg-slate-900/60 hover:border-cyan-400/50 text-slate-300 transition flex items-center gap-1.5 text-[11px]" title="Toggle UI sound synthesis">
+                    <span id="audio-indicator" class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]"></span>
+                    <span id="audio-label">AUDIO: ON</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Workspace -->
+        <main class="max-w-4xl mx-auto w-full space-y-4">
+
+            <!-- Primary Cipher Console -->
+            <section class="space-y-4">
+                <div class="glass-panel rounded-xl p-5 md:p-6 space-y-5">
+                    
+                    <!-- Operating Mode Selector: Transmit vs Receive -->
+                    <div class="grid grid-cols-2 gap-3 p-1 rounded-xl bg-slate-950/60 border border-slate-800 text-xs font-mono-tech">
+                        <button 
+                            id="btn-mode-encrypt" 
+                            onclick="setMode('encrypt')" 
+                            class="py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-cyan-500/15 text-cyan-300 border border-cyan-400/40 shadow-[0_0_15px_rgba(0,240,255,0.15)]"
+                        >
+                            <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                            <span>TRANSMIT (ENCRYPT)</span>
+                        </button>
+                        <button 
+                            id="btn-mode-decrypt" 
+                            onclick="setMode('decrypt')" 
+                            class="py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 transition-all duration-200 border border-transparent"
+                        >
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/>
+                            </svg>
+                            <span>RECEIVE (DECRYPT)</span>
+                        </button>
+                    </div>
+
+                    <!-- Shift Configuration Console (Presets + Custom Numeric Input) -->
+                    <div class="rounded-xl p-4 bg-slate-950/40 border border-slate-800/80 space-y-3">
+                        <div class="flex items-center justify-between text-xs font-mono-tech">
+                            <span class="text-slate-400 uppercase tracking-wider flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                                CIPHER KEY ROTATION VALUE
+                            </span>
+                            <div class="flex items-center gap-2">
+                                <span class="text-slate-500 text-[11px]">PARAM:</span>
+                                <span id="shift-badge" class="px-2.5 py-0.5 rounded bg-cyan-950/60 text-cyan-300 font-bold border border-cyan-400/40 text-sm shadow-[0_0_10px_rgba(0,240,255,0.2)]">
+                                    SHIFT +13
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Shift Presets Selection Grid -->
+                        <div class="flex flex-wrap items-center gap-2">
+                            <button id="preset-btn-3" onclick="selectPreset(3)" class="preset-btn flex-1 min-w-[85px] py-2 px-2.5 text-xs rounded-lg bg-slate-900 border border-slate-700/80 hover:border-cyan-400/60 hover:text-cyan-300 text-slate-300 font-mono-tech transition text-center">
+                                CLASSIC (3)
+                            </button>
+                            <button id="preset-btn-5" onclick="selectPreset(5)" class="preset-btn flex-1 min-w-[85px] py-2 px-2.5 text-xs rounded-lg bg-slate-900 border border-slate-700/80 hover:border-cyan-400/60 hover:text-cyan-300 text-slate-300 font-mono-tech transition text-center">
+                                STANDARD (5)
+                            </button>
+                            <button id="preset-btn-7" onclick="selectPreset(7)" class="preset-btn flex-1 min-w-[85px] py-2 px-2.5 text-xs rounded-lg bg-slate-900 border border-slate-700/80 hover:border-cyan-400/60 hover:text-cyan-300 text-slate-300 font-mono-tech transition text-center">
+                                SECURE (7)
+                            </button>
+                            <button id="preset-btn-13" onclick="selectPreset(13)" class="preset-btn flex-1 min-w-[85px] py-2 px-2.5 text-xs rounded-lg bg-cyan-500/20 border border-cyan-400 text-cyan-300 font-mono-tech transition text-center shadow-[0_0_10px_rgba(0,240,255,0.15)]">
+                                ROT-13 (13)
+                            </button>
+                            <button id="preset-btn-custom" onclick="selectPreset('custom')" class="preset-btn flex-1 min-w-[85px] py-2 px-2.5 text-xs rounded-lg bg-slate-900 border border-slate-700/80 hover:border-cyan-400/60 hover:text-cyan-300 text-slate-300 font-mono-tech transition text-center">
+                                CUSTOM
+                            </button>
+                        </div>
+
+                        <!-- Custom Numerical Input (Strictly 1 to 25) -->
+                        <div id="custom-shift-container" class="hidden pt-2 border-t border-slate-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-mono-tech">
+                            <span class="text-slate-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+                                SPECIFY ROTATION INTEGER (1 - 25):
+                            </span>
+                            <div class="flex items-center gap-2">
+                                <input 
+                                    type="number" 
+                                    id="custom-shift-input" 
+                                    min="1" 
+                                    max="25" 
+                                    step="1"
+                                    value="13" 
+                                    oninput="onCustomShiftChanged(this.value)"
+                                    class="w-24 bg-slate-950 border border-slate-700 focus:border-cyan-400 rounded-lg px-3 py-1.5 text-center text-cyan-200 text-sm font-mono-tech focus:outline-none focus:ring-1 focus:ring-cyan-400"
+                                >
+                                <span class="text-[10px] text-slate-500">[1..25]</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input Text Area -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center text-xs font-mono-tech">
+                            <label id="input-label" for="input-text" class="text-slate-300 font-medium tracking-wide flex items-center gap-2">
+                                <span id="input-dot" class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                                PAYLOAD DISPATCH // CLEARTEXT:
+                            </label>
+                            <span id="char-counter" class="text-slate-400">0 CHARS</span>
+                        </div>
+                        <div class="relative">
+                            <textarea 
+                                id="input-text" 
+                                rows="4" 
+                                placeholder="Enter telemetry packet or confidential message... (Press Enter to execute)" 
+                                class="w-full bg-slate-950/80 border border-slate-800 rounded-xl p-3.5 text-sm font-mono-tech text-cyan-200 placeholder-slate-600 focus:outline-none focus:border-cyan-400/70 focus:ring-1 focus:ring-cyan-400/40 transition resize-none"
+                                oninput="onInputChanged()"
+                                onkeydown="handleTextareaKeydown(event)"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Action Triggers -->
+                    <div class="flex flex-col sm:flex-row gap-3 pt-1">
+                        <button 
+                            id="execute-btn" 
+                            onclick="executeAction()" 
+                            class="flex-1 py-3 px-5 rounded-xl font-medium text-sm font-mono-tech flex items-center justify-center gap-2.5 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/50 text-cyan-300 hover:border-cyan-300 hover:bg-cyan-500/30 active:scale-[0.99] transition shadow-[0_0_20px_rgba(0,240,255,0.15)]"
+                        >
+                            <svg class="w-4 h-4 text-cyan-400 animate-pulse" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                            <span id="btn-text">EXECUTE PACKET ENCRYPTION</span>
+                        </button>
+                        <button 
+                            onclick="clearFields()" 
+                            class="py-3 px-4 rounded-xl text-xs font-mono-tech bg-slate-900/80 border border-slate-800 hover:border-rose-500/50 hover:text-rose-400 text-slate-400 transition flex items-center justify-center gap-1.5"
+                        >
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            <span>PURGE</span>
+                        </button>
+                    </div>
+
+                    <!-- Validation Error Bar -->
+                    <div id="error-banner" class="hidden p-3 rounded-lg bg-rose-950/60 border border-rose-500/50 text-rose-300 text-xs font-mono-tech flex items-center gap-2">
+                        <svg class="w-4 h-4 text-rose-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                        </svg>
+                        <span id="error-message">Error encountered.</span>
+                    </div>
+
+                </div>
+
+                <!-- Conditional Output Section Located Below Execute Button -->
+                <div id="output-section" class="hidden glass-panel rounded-xl p-5 md:p-6 space-y-4 transition-all duration-300">
+                    <div class="flex justify-between items-center text-xs font-mono-tech pb-2 border-b border-slate-800">
+                        <span class="text-slate-300 font-medium flex items-center gap-2">
+                            <span id="output-dot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            PROCESSED TELEMETRY STREAM:
+                        </span>
+                        <span id="buffer-state" class="text-cyan-400 text-[11px] font-semibold">SYNCHRONIZED</span>
+                    </div>
+
+                    <!-- Output Stream Box -->
+                    <div class="relative group">
+                        <div 
+                            id="output-box" 
+                            class="w-full min-h-[120px] max-h-[220px] overflow-y-auto bg-slate-950/90 border border-slate-800 rounded-xl p-4 text-sm font-mono-tech text-emerald-300 break-words select-text transition shadow-inner"
+                        ></div>
+                    </div>
+
+                    <!-- Output Action Buttons & Sharing -->
+                    <div class="space-y-3 pt-1">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <button 
+                                id="copy-btn" 
+                                onclick="copyOutputText()" 
+                                class="py-2.5 px-3 rounded-lg text-xs font-mono-tech bg-slate-900/90 border border-slate-700 hover:border-emerald-400 hover:text-emerald-300 text-slate-200 transition flex items-center justify-center gap-2"
+                            >
+                                <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                                <span>COPY RESULT</span>
+                            </button>
+                            <button 
+                                id="share-link-btn" 
+                                onclick="generateShareableLink()" 
+                                class="py-2.5 px-3 rounded-lg text-xs font-mono-tech bg-cyan-950/40 border border-cyan-500/40 hover:border-cyan-400 text-cyan-300 transition flex items-center justify-center gap-2 shadow-[0_0_10px_rgba(0,240,255,0.1)]"
+                            >
+                                <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                                </svg>
+                                <span>GENERATE DISPATCH LINK</span>
+                            </button>
+                        </div>
+
+                        <!-- Status Toast -->
+                        <div id="status-toast" class="opacity-0 transition-opacity duration-300 text-[11px] text-center py-2 px-3 bg-slate-900/90 border border-slate-700 text-slate-300 rounded-lg font-mono-tech">
+                            TELEMETRY LINK READY
+                        </div>
+
+                        <!-- Telemetry Protocol Info -->
+                        <div class="p-3 rounded-lg bg-slate-950/60 border border-slate-800/80 text-[11px] font-mono-tech text-slate-400 flex items-center justify-between">
+                            <span class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                                PROTOCOL: SHIFT-MODULO 26
+                            </span>
+                            <span class="text-slate-500">ASCII UTF-8 COMPLIANT</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- NOC System Status Footer -->
+        <footer class="text-center text-xs text-slate-500 font-mono-tech tracking-wider py-1">
+            NETWORK OPERATIONS CENTER // SECURE COMMUNICATIONS PROTOCOL // END-TO-END VERIFIED
+        </footer>
+
+    </div>
+
+    <!-- Application Script: Logic & World Map Cyber Canvas -->
+    <script>
+        /* ==========================================================================
+           1. Web Audio API Telemetry Synthesizer
+           ========================================================================== */
+        const AudioTelemetry = {
+            ctx: null,
+            enabled: true,
+
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    if (AudioCtx) this.ctx = new AudioCtx();
+                }
+            },
+            playClick() {
+                if (!this.enabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(1400, this.ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(400, this.ctx.currentTime + 0.025);
+                    gain.gain.setValueAtTime(0.035, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.025);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.025);
+                } catch(e) {}
+            },
+            playBleep() {
+                if (!this.enabled) return;
+                try {
+                    this.init();
+                    if (!this.ctx) return;
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(880, this.ctx.currentTime);
+                    osc.frequency.setValueAtTime(1760, this.ctx.currentTime + 0.04);
+                    gain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.09);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + 0.09);
+                } catch(e) {}
+            }
+        };
+
+        function toggleAudio() {
+            AudioTelemetry.enabled = !AudioTelemetry.enabled;
+            const ind = document.getElementById('audio-indicator');
+            const lbl = document.getElementById('audio-label');
+            if (AudioTelemetry.enabled) {
+                ind.className = 'w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]';
+                lbl.textContent = 'AUDIO: ON';
+                AudioTelemetry.playClick();
+            } else {
+                ind.className = 'w-2 h-2 rounded-full bg-slate-600';
+                lbl.textContent = 'AUDIO: MUTED';
+            }
+        }
+
+        /* ==========================================================================
+           2. Exact Python Caesar Cipher Implementation in JavaScript
+           ========================================================================== */
+        function caesar(text, shift, encrypt = true) {
+            if (typeof shift !== 'number' || !Number.isInteger(shift) || typeof shift === 'boolean') {
+                return 'Shift must be an integer value.';
+            }
+
+            if (shift < 1 || shift > 25) {
+                return 'Shift must be an integer between 1 and 25.';
+            }
+
+            const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+
+            if (!encrypt) {
+                shift = -shift;
+            }
+
+            const shifted_alphabet = alphabet.slice(shift) + alphabet.slice(0, shift);
+
+            const sourceChars = alphabet + alphabet.toUpperCase();
+            const targetChars = shifted_alphabet + shifted_alphabet.toUpperCase();
+            const translationTable = {};
+
+            for (let i = 0; i < sourceChars.length; i++) {
+                translationTable[sourceChars[i]] = targetChars[i];
+            }
+
+            let translated = '';
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (translationTable.hasOwnProperty(char)) {
+                    translated += translationTable[char];
+                } else {
+                    translated += char;
+                }
+            }
+
+            return translated;
+        }
+
+        function encrypt(text, shift) {
+            return caesar(text, shift, true);
+        }
+
+        function decrypt(text, shift) {
+            return caesar(text, shift, false);
+        }
+
+        /* ==========================================================================
+           3. UI Controller & Execution Handling
+           ========================================================================== */
+        let currentMode = 'encrypt';
+        let currentShift = 13;
+        let isCustomMode = false;
+        let isScrambling = false;
+
+        function setMode(mode) {
+            AudioTelemetry.playClick();
+            currentMode = mode;
+            const btnEncrypt = document.getElementById('btn-mode-encrypt');
+            const btnDecrypt = document.getElementById('btn-mode-decrypt');
+            const inputLabel = document.getElementById('input-label');
+            const outputDot = document.getElementById('output-dot');
+            const btnText = document.getElementById('btn-text');
+            const outputBox = document.getElementById('output-box');
+
+            if (mode === 'encrypt') {
+                btnEncrypt.className = 'py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-cyan-500/15 text-cyan-300 border border-cyan-400/40 shadow-[0_0_15px_rgba(0,240,255,0.15)]';
+                btnDecrypt.className = 'py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 transition-all duration-200 border border-transparent';
+                inputLabel.innerHTML = `<span id="input-dot" class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span> PAYLOAD DISPATCH // CLEARTEXT:`;
+                outputDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+                btnText.textContent = 'EXECUTE PACKET ENCRYPTION';
+                outputBox.className = 'w-full min-h-[145px] max-h-[185px] overflow-y-auto bg-slate-950/90 border border-slate-800 rounded-xl p-4 text-sm font-mono-tech text-emerald-300 break-words select-text transition shadow-inner';
+            } else {
+                btnDecrypt.className = 'py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 font-medium transition-all duration-200 bg-rose-500/15 text-rose-300 border border-rose-400/40 shadow-[0_0_15px_rgba(244,63,94,0.15)]';
+                btnEncrypt.className = 'py-2.5 px-4 rounded-lg flex items-center justify-center gap-2 font-medium text-slate-400 hover:text-slate-200 hover:bg-slate-900/60 transition-all duration-200 border border-transparent';
+                inputLabel.innerHTML = `<span id="input-dot" class="w-2 h-2 rounded-full bg-rose-400 animate-pulse"></span> INCOMING CIPHERTEXT // INTERCEPT STREAM:`;
+                outputDot.className = 'w-2 h-2 rounded-full bg-cyan-400';
+                btnText.textContent = 'EXECUTE PACKET DECRYPTION';
+                outputBox.className = 'w-full min-h-[145px] max-h-[185px] overflow-y-auto bg-slate-950/90 border border-slate-800 rounded-xl p-4 text-sm font-mono-tech text-cyan-300 break-words select-text transition shadow-inner';
+            }
+
+            document.getElementById('buffer-state').textContent = 'READY TO EXECUTE';
+        }
+
+        function selectPreset(preset) {
+            AudioTelemetry.playClick();
+            const presetButtons = document.querySelectorAll('.preset-btn');
+            presetButtons.forEach(btn => {
+                btn.className = 'preset-btn flex-1 min-w-[85px] py-2 px-2.5 text-xs rounded-lg bg-slate-900 border border-slate-700/80 hover:border-cyan-400/60 hover:text-cyan-300 text-slate-300 font-mono-tech transition text-center';
+            });
+
+            const customContainer = document.getElementById('custom-shift-container');
+
+            if (preset === 'custom') {
+                isCustomMode = true;
+                customContainer.classList.remove('hidden');
+                document.getElementById('preset-btn-custom').className = 'preset-btn flex-1 min-w-[85px] py-2 px-2.5 text-xs rounded-lg bg-cyan-500/20 border border-cyan-400 text-cyan-300 font-mono-tech transition text-center shadow-[0_0_10px_rgba(0,240,255,0.15)]';
+                const inputVal = parseInt(document.getElementById('custom-shift-input').value, 10);
+                onCustomShiftChanged(inputVal || 13);
+            } else {
+                isCustomMode = false;
+                customContainer.classList.add('hidden');
+                const btn = document.getElementById(`preset-btn-${preset}`);
+                if (btn) {
+                    btn.className = 'preset-btn flex-1 min-w-[85px] py-2 px-2.5 text-xs rounded-lg bg-cyan-500/20 border border-cyan-400 text-cyan-300 font-mono-tech transition text-center shadow-[0_0_10px_rgba(0,240,255,0.15)]';
+                }
+                currentShift = parseInt(preset, 10);
+                document.getElementById('shift-badge').textContent = `SHIFT +${currentShift}`;
+                hideError();
+            }
+
+            document.getElementById('buffer-state').textContent = 'KEY UPDATED';
+        }
+
+        function onCustomShiftChanged(val) {
+            const parsed = parseInt(val, 10);
+            const errorBanner = document.getElementById('error-banner');
+            const errorMessage = document.getElementById('error-message');
+
+            if (isNaN(parsed) || parsed < 1 || parsed > 25) {
+                errorMessage.textContent = 'Shift must be an integer between 1 and 25.';
+                errorBanner.classList.remove('hidden');
+                document.getElementById('shift-badge').textContent = 'SHIFT INVALID';
+                document.getElementById('shift-badge').className = 'px-2.5 py-0.5 rounded bg-rose-950/60 text-rose-300 font-bold border border-rose-500/50 text-sm shadow-[0_0_10px_rgba(244,63,94,0.2)]';
+                return;
+            }
+
+            hideError();
+            currentShift = parsed;
+            document.getElementById('shift-badge').textContent = `SHIFT +${currentShift}`;
+            document.getElementById('shift-badge').className = 'px-2.5 py-0.5 rounded bg-cyan-950/60 text-cyan-300 font-bold border border-cyan-400/40 text-sm shadow-[0_0_10px_rgba(0,240,255,0.2)]';
+            document.getElementById('buffer-state').textContent = 'KEY UPDATED';
+        }
+
+        function hideError() {
+            const errorBanner = document.getElementById('error-banner');
+            if (errorBanner) errorBanner.classList.add('hidden');
+        }
+
+        function onInputChanged() {
+            updateCharCount();
+            const text = document.getElementById('input-text').value;
+            const outputSection = document.getElementById('output-section');
+
+            if (!text.trim()) {
+                outputSection.classList.add('hidden');
+                document.getElementById('output-box').textContent = '';
+            } else {
+                document.getElementById('buffer-state').textContent = 'PAYLOAD PENDING';
+            }
+        }
+
+        function handleTextareaKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                executeAction();
+            }
+        }
+
+        function updateCharCount() {
+            const text = document.getElementById('input-text').value;
+            document.getElementById('char-counter').textContent = `${text.length} CHARS`;
+        }
+
+        function clearFields() {
+            AudioTelemetry.playClick();
+            document.getElementById('input-text').value = '';
+            document.getElementById('output-box').textContent = '';
+            document.getElementById('output-section').classList.add('hidden');
+            document.getElementById('buffer-state').textContent = 'EMPTY';
+            updateCharCount();
+            hideError();
+            showToast('PAYLOAD BUFFER PURGED');
+        }
+
+        function executeAction() {
+            if (isScrambling) return;
+            const text = document.getElementById('input-text').value;
+            const outputSection = document.getElementById('output-section');
+            const errorBanner = document.getElementById('error-banner');
+            const errorMessage = document.getElementById('error-message');
+            const outputBox = document.getElementById('output-box');
+
+            if (!text.trim()) {
+                outputSection.classList.add('hidden');
+                return;
+            }
+
+            if (isNaN(currentShift) || currentShift < 1 || currentShift > 25) {
+                errorMessage.textContent = 'Shift must be an integer between 1 and 25.';
+                errorBanner.classList.remove('hidden');
+                return;
+            } else {
+                hideError();
+            }
+
+            outputSection.classList.remove('hidden');
+
+            AudioTelemetry.playBleep();
+            isScrambling = true;
+            document.getElementById('buffer-state').textContent = 'PROCESSING...';
+
+            const finalResult = (currentMode === 'encrypt') 
+                ? encrypt(text, currentShift) 
+                : decrypt(text, currentShift);
+
+            let count = 0;
+            const cipherGlyphs = '0123456789ABCDEF!@#$%&*<>{}[]';
+            const scrambleTimer = setInterval(() => {
+                count++;
+                if (count < 5) {
+                    let preview = '';
+                    for (let i = 0; i < Math.min(finalResult.length, 65); i++) {
+                        if (text[i] === ' ' || text[i] === '\n') {
+                            preview += text[i];
+                        } else {
+                            preview += cipherGlyphs[Math.floor(Math.random() * cipherGlyphs.length)];
+                        }
+                    }
+                    if (finalResult.length > 65) preview += '...';
+                    outputBox.textContent = preview;
+                } else {
+                    clearInterval(scrambleTimer);
+                    outputBox.textContent = finalResult;
+                    isScrambling = false;
+                    document.getElementById('buffer-state').textContent = 'SYNCHRONIZED';
+                }
+            }, 30);
+        }
+
+        function copyOutputText() {
+            AudioTelemetry.playClick();
+            const outputBox = document.getElementById('output-box');
+            const text = outputBox.textContent;
+            if (!text) {
+                showToast('NO VALID OUTPUT BUFFER AVAILABLE');
+                return;
+            }
+
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                showToast('PAYLOAD COPIED TO CLIPBOARD');
+            } catch(e) {
+                showToast('COPY FAILED (MANUAL COPY REQUIRED)');
+            }
+            document.body.removeChild(temp);
+        }
+
+        function generateShareableLink() {
+            AudioTelemetry.playClick();
+            const text = document.getElementById('input-text').value;
+            if (!text.trim()) {
+                showToast('CANNOT ENCODE EMPTY PAYLOAD');
+                return;
+            }
+
+            if (isNaN(currentShift) || currentShift < 1 || currentShift > 25) {
+                showToast('CANNOT SHARE WITH INVALID SHIFT KEY');
+                return;
+            }
+
+            const payloadToSend = (currentMode === 'encrypt') 
+                ? encrypt(text, currentShift) 
+                : text;
+
+            const url = new URL(window.location.href.split('?')[0]);
+            url.searchParams.set('msg', payloadToSend);
+            url.searchParams.set('shift', currentShift.toString());
+            url.searchParams.set('mode', 'decrypt');
+
+            const shareUrl = url.toString();
+
+            const temp = document.createElement('textarea');
+            temp.value = shareUrl;
+            document.body.appendChild(temp);
+            temp.select();
+            try {
+                document.execCommand('copy');
+                showToast('DISPATCH LINK COPIED TO CLIPBOARD');
+            } catch(e) {
+                showToast('LINK CREATED (UNABLE TO CLIP)');
+            }
+            document.body.removeChild(temp);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('status-toast');
+            toast.textContent = `[TELEMETRY] ${msg}`;
+            toast.classList.remove('opacity-0');
+            toast.classList.add('opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('opacity-100');
+                toast.classList.add('opacity-0');
+            }, 2600);
+        }
+
+        function startZuluClock() {
+            setInterval(() => {
+                const now = new Date();
+                const h = String(now.getUTCHours()).padStart(2, '0');
+                const m = String(now.getUTCMinutes()).padStart(2, '0');
+                const s = String(now.getUTCSeconds()).padStart(2, '0');
+                document.getElementById('zulu-clock').textContent = `${h}:${m}:${s} UTC`;
+            }, 1000);
+        }
+
+        function parseIncomingUrl() {
+            try {
+                const params = new URLSearchParams(window.location.search);
+                const msg = params.get('msg');
+                const shiftParam = params.get('shift');
+                const modeParam = params.get('mode');
+
+                if (shiftParam) {
+                    const parsed = parseInt(shiftParam, 10);
+                    if (!isNaN(parsed) && parsed >= 1 && parsed <= 25) {
+                        currentShift = parsed;
+                        if ([3, 5, 7, 13].includes(currentShift)) {
+                            selectPreset(currentShift);
+                        } else {
+                            selectPreset('custom');
+                            document.getElementById('custom-shift-input').value = currentShift;
+                            onCustomShiftChanged(currentShift);
+                        }
+                    }
+                }
+
+                if (msg) {
+                    document.getElementById('input-text').value = msg;
+                    updateCharCount();
+                    if (modeParam === 'decrypt') {
+                        setMode('decrypt');
+                    }
+                    executeAction();
+                    showToast('INCOMING TRANSMISSION LOADED');
+                    return;
+                }
+            } catch(e) {}
+
+            updateCharCount();
+        }
+
+        /* ==========================================================================
+           4. Interactive Global World Map Canvas: Dot Matrix Continents,
+              RGB Pulsing Arcs & Interactive Node Telemetry
+           ========================================================================== */
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = 0;
+        let height = 0;
+
+        // Telemetry Hubs around the globe (Longitude [-180..180], Latitude [-90..90])
+        const rawHubs = [
+            { name: "London", lat: 51.5, lon: -0.1 },
+            { name: "New York", lat: 40.7, lon: -74.0 },
+            { name: "Tokyo", lat: 35.6, lon: 139.6 },
+            { name: "Singapore", lat: 1.3, lon: 103.8 },
+            { name: "Frankfurt", lat: 50.1, lon: 8.6 },
+            { name: "San Francisco", lat: 37.7, lon: -122.4 },
+            { name: "Sydney", lat: -33.8, lon: 151.2 },
+            { name: "São Paulo", lat: -23.5, lon: -46.6 },
+            { name: "Cape Town", lat: -33.9, lon: 18.4 },
+            { name: "Dubai", lat: 25.2, lon: 55.2 },
+            { name: "Hong Kong", lat: 22.3, lon: 114.1 },
+            { name: "Reykjavik", lat: 64.1, lon: -21.9 },
+            { name: "Mumbai", lat: 19.0, lon: 72.8 },
+            { name: "Stockholm", lat: 59.3, lon: 18.0 },
+            { name: "Seoul", lat: 37.5, lon: 126.9 },
+            { name: "Honolulu", lat: 21.3, lon: -157.8 },
+            { name: "Johannesburg", lat: -26.2, lon: 28.0 },
+            { name: "Buenos Aires", lat: -34.6, lon: -58.3 }
+        ];
+
+        // Continental landmass bounding boxes (approximate geographic polygons)
+        // to render a recognizable dot-matrix world map background
+        const landmassBounds = [
+            // North America
+            { minLon: -168, maxLon: -55, minLat: 25, maxLat: 72 },
+            { minLon: -125, maxLon: -70, minLat: 15, maxLat: 30 },
+            // South America
+            { minLon: -82, maxLon: -35, minLat: -55, maxLat: 12 },
+            // Europe
+            { minLon: -10, maxLon: 40, minLat: 36, maxLat: 70 },
+            // Africa
+            { minLon: -18, maxLon: 52, minLat: -35, maxLat: 37 },
+            // Asia
+            { minLon: 40, maxLon: 145, minLat: 10, maxLat: 75 },
+            { minLon: 68, maxLon: 90, minLat: 8, maxLat: 30 }, // India
+            // Southeast Asia
+            { minLon: 95, maxLon: 140, minLat: -10, maxLat: 20 },
+            // Australia & NZ
+            { minLon: 113, maxLon: 154, minLat: -44, maxLat: -10 },
+            { minLon: 166, maxLon: 178, minLat: -47, maxLat: -34 },
+            // Japan
+            { minLon: 130, maxLon: 145, minLat: 31, maxLat: 45 },
+            // UK & Ireland
+            { minLon: -10, maxLon: 2, minLat: 50, maxLat: 59 }
+        ];
+
+        let mapDots = [];
+        let hubs = [];
+        let connections = [];
+        let pulses = [];
+        let mouse = { x: -1000, y: -1000, active: false };
+
+        function geoToCanvas(lon, lat) {
+            const x = ((lon + 180) / 360) * width;
+            const y = ((90 - lat) / 180) * height;
+            return { x, y };
+        }
+
+        const rgbPalettes = [
+            { beam: '#00f0ff', glow: 'rgba(0, 240, 255, 0.45)' }, // Neon Cyan
+            { beam: '#10b981', glow: 'rgba(16, 185, 129, 0.45)' }, // Neon Emerald
+            { beam: '#f43f5e', glow: 'rgba(244, 63, 94, 0.45)' },  // Neon Magenta
+            { beam: '#a855f7', glow: 'rgba(168, 85, 247, 0.45)' }, // Neon Violet
+            { beam: '#fbbf24', glow: 'rgba(251, 191, 36, 0.45)' }   // Neon Amber
+        ];
+
+        function isOverLand(lon, lat) {
+            // Refined heuristics to exclude large oceanic areas within bounding boxes
+            if (lon > -45 && lon < -15 && lat > 15 && lat < 60) return false; // Mid-Atlantic
+            if (lon > 60 && lon < 100 && lat < 5 && lat > -30) return false; // Indian Ocean
+            if (lon > -160 && lon < -120 && lat < 20 && lat > -40) return false; // South Pacific
+
+            for (let i = 0; i < landmassBounds.length; i++) {
+                const b = landmassBounds[i];
+                if (lon >= b.minLon && lon <= b.maxLon && lat >= b.minLat && lat <= b.maxLat) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function generateWorldDotMatrix() {
+            mapDots = [];
+            const step = Math.max(8, Math.floor(width / 160));
+            
+            for (let x = 0; x < width; x += step) {
+                for (let y = 0; y < height; y += step) {
+                    const lon = (x / width) * 360 - 180;
+                    const lat = 90 - (y / height) * 180;
+
+                    if (isOverLand(lon, lat)) {
+                        mapDots.push({
+                            x,
+                            y,
+                            origX: x,
+                            origY: y,
+                            baseAlpha: 0.18 + (Math.sin(x * 0.05 + y * 0.05) * 0.06),
+                            radius: 1.25
+                        });
+                    }
+                }
+            }
+        }
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+
+            generateWorldDotMatrix();
+
+            hubs = rawHubs.map(h => {
+                const pt = geoToCanvas(h.lon, h.lat);
+                return {
+                    name: h.name,
+                    x: pt.x,
+                    y: pt.y,
+                    origX: pt.x,
+                    origY: pt.y,
+                    baseRadius: 3.5,
+                    pulsePhase: Math.random() * Math.PI * 2
+                };
+            });
+
+            // Connect nearest neighboring hubs
+            connections = [];
+            for (let i = 0; i < hubs.length; i++) {
+                const distances = [];
+                for (let j = 0; j < hubs.length; j++) {
+                    if (i === j) continue;
+                    const dx = hubs[i].x - hubs[j].x;
+                    const dy = hubs[i].y - hubs[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    distances.push({ index: j, dist });
+                }
+                distances.sort((a, b) => a.dist - b.dist);
+                for (let k = 0; k < 3; k++) {
+                    const j = distances[k].index;
+                    if (!connections.some(c => (c.from === i && c.to === j) || (c.from === j && c.to === i))) {
+                        connections.push({ from: i, to: j });
+                    }
+                }
+            }
+
+            // Spawn active RGB pulses along cyber wire arcs
+            pulses = [];
+            for (let i = 0; i < 32; i++) {
+                spawnPulse();
+            }
+
+            const arcCountEl = document.getElementById('active-arcs-count');
+            if (arcCountEl) arcCountEl.textContent = `${connections.length} ARCS // ${pulses.length} STREAMS`;
+        }
+
+        function spawnPulse() {
+            if (connections.length === 0) return;
+            const conn = connections[Math.floor(Math.random() * connections.length)];
+            const reverse = Math.random() > 0.5;
+            const fromIdx = reverse ? conn.to : conn.from;
+            const toIdx = reverse ? conn.from : conn.to;
+            const colorObj = rgbPalettes[Math.floor(Math.random() * rgbPalettes.length)];
+
+            pulses.push({
+                fromIdx,
+                toIdx,
+                t: Math.random(),
+                speed: 0.003 + Math.random() * 0.005,
+                color: colorObj.beam,
+                glow: colorObj.glow,
+                trailLength: 0.08 + Math.random() * 0.06
+            });
+        }
+
+        function getArcPoint(p1, p2, t) {
+            const midX = (p1.x + p2.x) / 2;
+            const midY = (p1.y + p2.y) / 2;
+            const dx = p2.x - p1.x;
+            const dy = p2.y - p1.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            const curvature = Math.min(dist * 0.24, 110);
+            const nx = -dy / (dist || 1);
+            const ny = dx / (dist || 1);
+
+            const cpX = midX + nx * curvature;
+            const cpY = midY + ny * curvature;
+
+            const inv = 1 - t;
+            const x = inv * inv * p1.x + 2 * inv * t * cpX + t * t * p2.x;
+            const y = inv * inv * p1.y + 2 * inv * t * cpY + t * t * p2.y;
+            return { x, y, cpX, cpY };
+        }
+
+        function renderNetwork() {
+            ctx.clearRect(0, 0, width, height);
+
+            // 1. Draw World Coordinate Grid Lines
+            ctx.save();
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.05)';
+            ctx.lineWidth = 1;
+            const stepX = width / 12;
+            for (let x = 0; x < width; x += stepX) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            const stepY = height / 8;
+            for (let y = 0; y < height; y += stepY) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+            ctx.restore();
+
+            // 2. Render World Landmass Dot-Matrix
+            ctx.save();
+            for (let i = 0; i < mapDots.length; i++) {
+                const dot = mapDots[i];
+
+                if (mouse.active) {
+                    const dx = dot.x - mouse.x;
+                    const dy = dot.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 80 && dist > 0) {
+                        const push = (80 - dist) / 80;
+                        dot.x += (dx / dist) * push * 3;
+                        dot.y += (dy / dist) * push * 3;
+                    }
+                }
+                dot.x += (dot.origX - dot.x) * 0.08;
+                dot.y += (dot.origY - dot.y) * 0.08;
+
+                ctx.fillStyle = `rgba(0, 240, 255, ${dot.baseAlpha})`;
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.restore();
+
+            // 3. Draw Static Wire Arcs Between Cities
+            for (let i = 0; i < connections.length; i++) {
+                const p1 = hubs[connections[i].from];
+                const p2 = hubs[connections[i].to];
+                if (!p1 || !p2) continue;
+
+                const arcPt = getArcPoint(p1, p2, 0.5);
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(p1.x, p1.y);
+                ctx.quadraticCurveTo(arcPt.cpX, arcPt.cpY, p2.x, p2.y);
+                ctx.strokeStyle = 'rgba(56, 189, 248, 0.16)';
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            // 4. Draw Animated RGB Pulses Bouncing Across Wires
+            for (let i = 0; i < pulses.length; i++) {
+                const pulse = pulses[i];
+                pulse.t += pulse.speed;
+                if (pulse.t >= 1) {
+                    pulse.t = 0;
+                    const conn = connections[Math.floor(Math.random() * connections.length)];
+                    const rev = Math.random() > 0.5;
+                    pulse.fromIdx = rev ? conn.to : conn.from;
+                    pulse.toIdx = rev ? conn.from : conn.to;
+                    const c = rgbPalettes[Math.floor(Math.random() * rgbPalettes.length)];
+                    pulse.color = c.beam;
+                    pulse.glow = c.glow;
+                }
+
+                const p1 = hubs[pulse.fromIdx];
+                const p2 = hubs[pulse.toIdx];
+                if (!p1 || !p2) continue;
+
+                const pos = getArcPoint(p1, p2, pulse.t);
+                const prevT = Math.max(0, pulse.t - pulse.trailLength);
+                const prevPos = getArcPoint(p1, p2, prevT);
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(prevPos.x, prevPos.y);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.strokeStyle = pulse.color;
+                ctx.lineWidth = 2.8;
+                ctx.shadowColor = pulse.color;
+                ctx.shadowBlur = 12;
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = pulse.color;
+                ctx.shadowBlur = 14;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // 5. Draw Major World Telemetry Hub Nodes & Labels
+            for (let i = 0; i < hubs.length; i++) {
+                const hub = hubs[i];
+                hub.pulsePhase += 0.04;
+
+                if (mouse.active) {
+                    const mdx = hub.x - mouse.x;
+                    const mdy = hub.y - mouse.y;
+                    const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                    if (mdist < 140 && mdist > 0) {
+                        const force = (140 - mdist) / 140;
+                        hub.x += (mdx / mdist) * force * 1.5;
+                        hub.y += (mdy / mdist) * force * 1.5;
+                    }
+                }
+
+                hub.x += (hub.origX - hub.x) * 0.05;
+                hub.y += (hub.origY - hub.y) * 0.05;
+
+                const pulseScale = 1 + Math.sin(hub.pulsePhase) * 0.35;
+                const radius = hub.baseRadius * pulseScale;
+
+                ctx.save();
+                // Outer glowing halo
+                ctx.beginPath();
+                ctx.arc(hub.x, hub.y, radius * 2.4, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 240, 255, 0.16)';
+                ctx.fill();
+
+                // Inner core node
+                ctx.beginPath();
+                ctx.arc(hub.x, hub.y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = '#00f0ff';
+                ctx.shadowColor = '#00f0ff';
+                ctx.shadowBlur = 10;
+                ctx.fill();
+
+                // Hub Label
+                ctx.font = '10px "JetBrains Mono", monospace';
+                ctx.fillStyle = 'rgba(226, 232, 240, 0.75)';
+                ctx.fillText(hub.name.toUpperCase(), hub.x + 8, hub.y + 3);
+                ctx.restore();
+            }
+
+            requestAnimationFrame(renderNetwork);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            mouse.active = true;
+        });
+
+        window.addEventListener('mouseleave', () => {
+            mouse.active = false;
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+
+        window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvas();
+            renderNetwork();
+            startZuluClock();
+            parseIncomingUrl();
+        });
+    </script>
+</body>
+</html>
